@@ -1,12 +1,15 @@
-rom tkinter import messagebox
+import tkinter as tkinter
+from tkinter import messagebox
+
 
 data_dict = {}
 
-def check_fields(*args): 
+
+def check_fields(*args):
     all_filled = (
-        entry1.get().strip() != "" and
-        entry2.get().strip() != "" and
-        entry3.get().strip() != ""
+        issue_var.get().strip() != "" and
+        description_var.get().strip() != "" and
+        location_var.get().strip() != ""
     )
     if all_filled:
         save_button.config(state="normal", bg="green")
@@ -14,49 +17,54 @@ def check_fields(*args):
         save_button.config(state="disabled", bg="grey")
 
 def save_data():
-    key = entry1.get()
-    value1 = entry2.get()
-    value2 = entry3.get()
+    key = issue_var.get().strip()
+    value1 = description_var.get().strip()
+    value2 = location_var.get().strip()
+
+    if key in data_dict:
+        messagebox.showwarning("Duplicate Key", f"Issue '{key}' already exists!")
+        return
 
     data_dict[key] = {
-        "Issue": value1,
+        "Description": value1,
         "Location": value2
     }
 
-    messagebox.showinfo("Saved", f"saved for '{key}'")
+    messagebox.showinfo("Saved", f"Data saved for '{key}'")
 
-    entry1.delete(0, tk.END)
-    entry2.delete(0, tk.END)
-    entry3.delete(0, tk.END)
+
+    issue_var.set("")
+    description_var.set("")
+    location_var.set("")
 
     print(data_dict)
 
-root = tk.Tk()
-root.title("issue")
+root = tkinter.Tk()
+root.title("Issue Tracker")
 root.geometry("400x250")
-root.resizable(False, False)  
+root.resizable(False, False)
 
-var1 = tk.StringVar()
-var2 = tk.StringVar()
-var3 = tk.StringVar()
-var1.trace("w", check_fields)  
-var2.trace("w", check_fields)
-var3.trace("w", check_fields)
+issue_var = tkinter.StringVar()
+description_var = tkinter.StringVar()
+location_var = tkinter.StringVar()
+issue_var.trace("w", check_fields)
+description_var.trace("w", check_fields)
+location_var.trace("w", check_fields)
 
-tk.Label(root, text="issue").pack(pady=5)
-entry1 = tk.Entry(root, width=40, textvariable=var1) 
-entry1.pack()
+tkinter.Label(root, text="Issue").pack(pady=5)
+issue_entry = tkinter.Entry(root, width=40, textvariable=issue_var)
+issue_entry.pack()
 
-tk.Label(root, text="issue").pack(pady=5)
-entry2 = tk.Entry(root, width=40, textvariable=var2) 
-entry2.pack()
+tkinter.Label(root, text="Description").pack(pady=5)
+description_entry = tkinter.Entry(root, width=40, textvariable=description_var)
+description_entry.pack()
 
-tk.Label(root, text="where").pack(pady=5)
-entry3 = tk.Entry(root, width=40, textvariable=var3)  
-entry3.pack()
+tkinter.Label(root, text="Location").pack(pady=5)
+location_entry = tkinter.Entry(root, width=40, textvariable=location_var)
+location_entry.pack()
 
-save_button = tk.Button(root, text="submit", command=save_data,
-    state="disabled", bg="grey") 
+save_button = tkinter.Button(root, text="Submit", command=save_data,
+    state="disabled", bg="grey")
 save_button.pack(pady=20)
 
 root.mainloop()
