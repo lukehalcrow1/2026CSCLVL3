@@ -40,8 +40,8 @@ def save_data():
     print(data_dict)
 
 root = tkinter.Tk()
-root.title("Issue Tracker")
-root.geometry("400x400")
+root.title("(Schoolname) Issue Reporting System")
+root.geometry("400x700")
 root.resizable(False, False)
 
 issue_var = tkinter.StringVar()
@@ -51,18 +51,19 @@ issue_var.trace("w", check_fields)
 description_var.trace("w", check_fields)
 location_var.trace("w", check_fields)
 
-instructions = tkinter.Label(root, text="Please fill out all fields and click Submit.", font=("Arial", 10), wraplength=380, justify="center")
-instructions.place(relx=0.5, rely=0.05, anchor="center")
+instructions = tkinter.Label(root, text="This is the reporting system for (schoolname), Enter the name and a brief description of your issue, a location is also necessary for the resolution of the problem.",
+font=("Arial", 10), wraplength=380, justify="center")
+instructions.place(relx=0.5, rely=0.08, anchor="center")
 
-tkinter.Label(root, text="Issue").place(relx=0.1, rely=0.2, anchor="w")
+tkinter.Label(root, text="Issue").place(relx=0.12, rely=0.2, anchor="w")
 issue_entry = tkinter.Entry(root, width=40, textvariable=issue_var)
 issue_entry.place(relx=0.5, rely=0.2, anchor="center")
 
-tkinter.Label(root, text="Description").place(relx=0.1, rely=0.35, anchor="w")
+tkinter.Label(root, text="Description").place(relx=0.035, rely=0.35, anchor="w")
 description_entry = tkinter.Entry(root, width=40, textvariable=description_var)
 description_entry.place(relx=0.5, rely=0.35, anchor="center")
 
-tkinter.Label(root, text="Location").place(relx=0.1, rely=0.5, anchor="w")
+tkinter.Label(root, text="Location").place(relx=0.07, rely=0.5, anchor="w")
 location_entry = tkinter.Entry(root, width=40, textvariable=location_var)
 location_entry.place(relx=0.5, rely=0.5, anchor="center")
 
