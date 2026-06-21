@@ -1,10 +1,28 @@
 import tkinter as tkinter
 from tkinter import messagebox
+import json
+import os
 
+datafile = "data.json"
 
 data_dict = {}
 
+def load_data():
+    if os.path.exists(datafile):
+        try:
+            with open(datafile, "r" , encoding= "utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            messagebox.showerror("Error", "Failed to load data")
+            return {}
 
+def save_to_file():
+    try:
+        with open(datafile, "w", encoding="utf-8") as f:
+            json.dump(data_dict, f, indent=4)
+    except OSError:
+        messagebox.showerror("Error", "Failed to save data")
+        
 def check_fields(*args):
     all_filled = (
         issue_var.get().strip() != "" and
@@ -22,13 +40,15 @@ def save_data():
     value2 = location_var.get().strip()
 
     if key in data_dict:
-        messagebox.showwarning("Duplicate Key", f"Issue '{key}' already exists!")
+        messagebox.showwarning("Duplicate Key", f"Issue '{key}' already exists")
         return
 
     data_dict[key] = {
         "Description": value1,
         "Location": value2
     }
+
+    save_to_file()
 
     messagebox.showinfo("Saved", f"Data saved for '{key}'")
 
@@ -37,11 +57,10 @@ def save_data():
     description_var.set("")
     location_var.set("")
 
-    print(data_dict)
 
 root = tkinter.Tk()
 root.title("(Schoolname) Issue Reporting System")
-root.geometry("400x700")
+root.geometry("400x800")
 root.resizable(False, False)
 
 issue_var = tkinter.StringVar()
@@ -55,19 +74,19 @@ instructions = tkinter.Label(root, text="This is the reporting system for (schoo
 font=("Arial", 10), wraplength=380, justify="center")
 instructions.place(relx=0.5, rely=0.08, anchor="center")
 
-tkinter.Label(root, text="Issue").place(relx=0.12, rely=0.2, anchor="w")
+tkinter.Label(root, text="Issue").place(relx=0.12, rely=0.25, anchor="w")
 issue_entry = tkinter.Entry(root, width=40, textvariable=issue_var)
-issue_entry.place(relx=0.5, rely=0.2, anchor="center")
+issue_entry.place(relx=0.5, rely=0.25, anchor="center")
 
-tkinter.Label(root, text="Description").place(relx=0.035, rely=0.35, anchor="w")
+tkinter.Label(root, text="Description").place(relx=0.035, rely=0.4, anchor="w")
 description_entry = tkinter.Entry(root, width=40, textvariable=description_var)
-description_entry.place(relx=0.5, rely=0.35, anchor="center")
-
-tkinter.Label(root, text="Location").place(relx=0.07, rely=0.5, anchor="w")
+description_entry.place(relx=0.5, rely=0.4, anchor="center")
+ 
+tkinter.Label(root, text="Location").place(relx=0.07, rely=0.55, anchor="w")
 location_entry = tkinter.Entry(root, width=40, textvariable=location_var)
-location_entry.place(relx=0.5, rely=0.5, anchor="center")
+location_entry.place(relx=0.5, rely=0.55, anchor="center")
 
-save_button = tkinter.Button(root, text="Submit", command=save_data, state="disabled", bg="grey")
-save_button.place(relx=0.5, rely=0.7, anchor="center")
+save_button = tkinter.Button(root, text="Submit", command=save_data, state="disabled", bg="grey",width=20, height=4 )
+save_button.place(relx=0.5, rely=0.75, anchor="center")
 
 root.mainloop()
